@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: HePing
- * Date: 2019-03-02
- * Time: 19:10
- */
+
 namespace INocturneSwoole\Connection\Tests;
 
 use Swoole\Coroutine;

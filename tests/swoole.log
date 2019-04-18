@@ -3,3 +3,9 @@ Swoole\Coroutine\MySQL::query: mysql client has already been bound to another co
 Stack trace:
 #0  Swoole\Coroutine\MySQL->query() called at [/data/www/swoole-connection/tests/MySQL.php:45]
 [2019-04-18 11:57:08 $74.0]	WARNING	swManager_check_exit_status: worker#0[pid=76] abnormal exit, status=255, signal=0
+[2019-04-19 00:03:52 *85379.1]	NOTICE	swReactorProcess_send2client (ERROR 1005): send 148 byte failed, session#100 does not exist.
+[2019-04-19 00:13:56 *86702.1]	NOTICE	swReactorProcess_send2client (ERROR 1005): send 148 byte failed, session#34 does not exist.
+[2019-04-19 00:13:56 *86702.1]	NOTICE	swReactorProcess_send2client (ERROR 1005): send 148 byte failed, session#36 does not exist.
+[2019-04-19 00:13:56 *86702.1]	NOTICE	swReactorProcess_send2client (ERROR 1005): send 148 byte failed, session#33 does not exist.
+[2019-04-19 00:13:56 *86702.1]	NOTICE	swReactorProcess_send2client (ERROR 1005): send 148 byte failed, session#37 does not exist.
+[2019-04-19 00:13:56 *86702.1]	NOTICE	swReactorProcess_send2client (ERROR 1005): send 148 byte failed, session#35 does not exist.

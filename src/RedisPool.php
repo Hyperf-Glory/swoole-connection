@@ -30,11 +30,11 @@ class RedisPool extends Base
         }
         self::$connsConfig = $connsConfig;
         foreach ($connsConfig as $name => $config) {
-            self::$spareConns[$name] = [];
-            self::$busyConns[$name] = [];
+            self::$spareConns[$name]        = [];
+            self::$busyConns[$name]         = [];
             self::$pendingFetchCount[$name] = 0;
-            self::$resumeFetchCount[$name] = 0;
-            self::$initConnCount[$name] = 0;
+            self::$resumeFetchCount[$name]  = 0;
+            self::$initConnCount[$name]     = 0;
             if ($config['maxSpareConns'] <= 0 || $config['maxConns'] <= 0) {
                 throw new RedisException("Invalid maxSpareConns or maxConns in {$name}");
             }
@@ -44,16 +44,18 @@ class RedisPool extends Base
 
     /**
      * 回收连接
+     *
      * @param Redis $conn
-     * @param bool $busy
+     * @param bool  $busy
      */
     public static function recycle(Redis $conn, bool $busy = true)
     {
-        self::go(function () use ($conn, $busy) {
+        self::go(function () use ($conn, $busy)
+        {
             if (!self::$init) {
                 throw new RedisException('Should call RedisPool::init.');
             }
-            $id = spl_object_hash($conn);
+            $id       = spl_object_hash($conn);
             $connName = self::$connsNameMap[$id];
 
             if ($busy) {
@@ -78,7 +80,7 @@ class RedisPool extends Base
                 if (!$conn->connected) {
                     unset(self::$connsNameMap[$id]);
                     $conn = self::initConn($connName);
-                    $id = spl_object_id($conn);
+                    $id   = spl_object_id($conn);
                 }
                 $connsPool[] = $conn;
                 if (self::$pendingFetchCount[$connName] > 0) {
@@ -91,10 +93,11 @@ class RedisPool extends Base
 
     /**
      * @param $connName
+     *
      * @return Redis|null|false
      * @throws RedisException
      */
-    public static function fetch($connName): ?Redis
+    public static function fetch($connName) : ?Redis
     {
         if (!self::$init) {
             throw new RedisException('Should call RedisPool::init!');
@@ -108,13 +111,10 @@ class RedisPool extends Base
             if (!$conn->connected) {
                 $conn = self::reconnect($conn, $connName);
             } else {
-                $id = spl_object_hash($conn);
+                $id                              = spl_object_hash($conn);
                 self::$busyConns[$connName][$id] = $conn;
-                self::$lastConnsTime[$id] = microtime(true);
+                self::$lastConnsTime[$id]        = microtime(true);
             }
-            defer(function () use ($conn) {
-                self::recycle($conn);
-            });
             return $conn;
         }
         if (count(self::$busyConns[$connName]) + count($connsPool)
@@ -142,14 +142,12 @@ class RedisPool extends Base
                     $conn = self::reconnect($conn, $connName);
                     --self::$pendingFetchCount[$connName];
                 } else {
-                    $id = spl_object_id($conn);
+                    $id                                                 = spl_object_id($conn);
                     self::$busyConns[$connName][spl_object_hash($conn)] = $conn;
-                    self::$lastConnsTime[$id] = microtime(true);
+                    self::$lastConnsTime[$id]                           = microtime(true);
                     --self::$pendingFetchCount[$connName];
                 }
-                defer(function () use ($conn) {
-                    self::recycle($conn);
-                });
+
                 return $conn;
             } else {
                 return false;//should not happen
@@ -160,16 +158,18 @@ class RedisPool extends Base
 
     /**
      * 初始化连接
+     *
      * @param string $connName
+     *
      * @return Redis
      * @throws RedisException
      */
     public static function initConn(string $connName)
     {
         ++self::$initConnCount[$connName];
-        $conn = new Redis(self::$connsConfig[$connName]['options'] ?? []);
-        $id = spl_object_hash($conn);
-        self::$connsNameMap[$id] = $connName;
+        $conn                            = new Redis(self::$connsConfig[$connName]['options'] ?? []);
+        $id                              = spl_object_hash($conn);
+        self::$connsNameMap[$id]         = $connName;
         self::$busyConns[$connName][$id] = $conn;
         if ($conn->connect(self::$connsConfig[$connName]['serverInfo']['host'], self::$connsConfig[$connName]['serverInfo']['port']) == false) {
             unset(self::$busyConns[$connName][$id]);
@@ -179,20 +179,20 @@ class RedisPool extends Base
         }
         self::$lastConnsTime[$id] = microtime(true);
         --self::$initConnCount[$connName];
-        defer(function () use ($conn) {
-            self::recycle($conn);
-        });
+
         return $conn;
     }
 
     /**
      * 断线重连
+     *
      * @param $conn
      * @param $connName
+     *
      * @return Redis|null
      * @throws RedisException
      */
-    public static function reconnect($conn, $connName): ?Redis
+    public static function reconnect($conn, $connName) : ?Redis
     {
         if (!$conn->connected) {
             $old_id = spl_object_hash($conn);
