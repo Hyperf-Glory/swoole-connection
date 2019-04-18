@@ -18,7 +18,7 @@ class MySQL
     {
         $server = new \Swoole\Http\Server("0.0.0.0", 9502,SWOOLE_BASE);
         $server->set([
-            'worker_num' => 1,
+            'worker_num' => 16,
             'daemonize' => false,
             'log_file'   => 'swoole.log',
         ]);
@@ -41,7 +41,7 @@ class MySQL
 //            echo 'request2:cid:' . Coroutine::getuid() . PHP_EOL;
 //            $ret           = $swoole_mysql2->query('select sleep(1)');
             //\INocturneSwoole\Connection\MySQLPool::recycle($swoole_mysql);
-            $response->end(json_encode($ret));
+            $response->end('1');
         });
         $server->start();
     }

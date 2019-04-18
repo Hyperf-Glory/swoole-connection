@@ -182,9 +182,6 @@ class MySQLPool extends Base
         }
         self::$lastConnsTime[$id] = microtime(true);
         --self::$initConnCount[$connName];
-        defer(function () use ($conn) {
-            self::recycle($conn);
-        });
 
         return $conn;
     }
