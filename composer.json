@@ -1,0 +1,27 @@
+{
+  "name": "i-nocturne/swoole-connection",
+  "description": "swoole连接池",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "He Peter",
+      "email": "847050412@qq.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "INocturneSwoole\\Connection\\": "src/",
+      "INocturneSwoole\\Connection\\Tests\\": "tests/"
+    }
+  },
+  "keywords": [
+    "Swoole",
+    "Mysql"
+  ],
+  "require": {
+    "ext-swoole": "^4.2.9",
+    "php": ">=7.2",
+    "phpunit/phpunit": "7.5.1"
+  }
+}

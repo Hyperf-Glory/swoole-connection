@@ -1,0 +1,5 @@
+[2019-04-18 11:57:08 *76.0]	ERROR	(PHP Fatal Error: 10002):
+Swoole\Coroutine\MySQL::query: mysql client has already been bound to another coroutine#1018, reading or writing of the same socket in multiple coroutines at the same time is not allowed
+Stack trace:
+#0  Swoole\Coroutine\MySQL->query() called at [/data/www/swoole-connection/tests/MySQL.php:45]
+[2019-04-18 11:57:08 $74.0]	WARNING	swManager_check_exit_status: worker#0[pid=76] abnormal exit, status=255, signal=0
