@@ -2,6 +2,7 @@
 
 namespace INocturneSwoole\Connection;
 
+
 use Swoole\Coroutine\Channel;
 
 class Base extends Context
@@ -41,25 +42,6 @@ class Base extends Context
         });
     }
 
-    /**
-     * @param \Swoole\Coroutine\Channel $channel
-     * @param int                       $timeout
-     *
-     * @return bool|mixed
-     */
-    protected static function CoPop(Channel $channel, int $timeout = 0)
-    {
-        if (version_compare(swoole_version(), '4.3.0', '>=')) {
-            return $channel->pop($timeout);
-        } else {
-            {
-                if (0 == $timeout) {
-                    return $channel->pop($timeout);
-                } else {
-                    return false;
-                }
-            }
-        }
-    }
+
 
 }
